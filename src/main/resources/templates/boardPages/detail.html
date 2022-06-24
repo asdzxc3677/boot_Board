@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>글번호</th>
+        <td th:text="${board.id}"></td>
+        <th>작성자</th>
+        <td th:text="${board.boardWriter}"></td>
+        <th>조회수</th>
+        <td th:text="${board.boardHits}"></td>
+        <th>작성시간</th>
+        <td th:text="${board.createdTime}"></td>
+    </tr>
+    <tr>
+        <th>글제목</th>
+        <td th:text="${board.boardTitle}"></td>
+    </tr>
+    <tr>
+        <th>글내용</th>
+        <td th:text="${board.boardContents}"></td>
+    </tr>
+    <tr>
+        <button type="button" onclick="updateById([[${board.id}]])">수정</button>
+        <button type="button" onclick="deleteById([[${board.id}]])">삭제</button>
+    </tr>
+</table>
+</body>
+<script th:inline="javascript">
+    const updateById = (id) =>{
+        location.href="/board/update"+id;
+    }
+    const deleteById = (id) =>{
+        location.href="/board/delete" +id;
+    }
+</script>
+</html>
