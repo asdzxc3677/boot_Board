@@ -15,7 +15,7 @@ public class BoardEntity extends BaseEntity {
     @Column(name = "board_id") // 컬럼 이름 지정
     private Long id; // @Id, @GeneratedValue, @Column(name = "id") 한셋트
 
-    @Column(length = 50,nullable = false)
+    @Column(length = 50, nullable = false)
     private String boardTitle;
 
     @Column(length = 20)
@@ -30,7 +30,21 @@ public class BoardEntity extends BaseEntity {
     @Column
     private int boardHits;
 
-    public static BoardEntity toBoardEntity(BoardDTO boardDTO){
+    @Column
+    private String boardFileName;
+
+    public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+        boardEntity.setBoardPassword(boardDTO.getBoardPassword());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
+        boardEntity.setBoardHits(0);
+        boardEntity.setBoardFileName(boardDTO.getBoardFileName());
+        return boardEntity;
+    }
+
+    public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setId(boardDTO.getId());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
@@ -39,5 +53,20 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(boardDTO.getBoardHits());
         return boardEntity;
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

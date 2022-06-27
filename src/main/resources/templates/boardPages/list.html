@@ -14,7 +14,7 @@
         <th>작성일자</th>
         <th>조회수</th>
     </tr>
-    <tr th:each="board:${boardList}">
+    <tr th:each="board: ${boardList}">
         <td th:text="${board.id}"></td>
         <td><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></td> <!-- 요청을 controller로 -->
         <td th:text="${board.boardWriter}"></td>

@@ -3,69 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
 </head>
 <body>
+<h2>detail.html</h2>
 <table>
+    <thead>
     <tr>
-        <th>글번호</th>
-        <td th:text="${board.id}"></td>
+        <th>번호</th>
         <th>작성자</th>
-        <td th:text="${board.boardWriter}"></td>
+        <th>제목</th>
+        <th>비밀번호</th>
+        <th>작성일자</th>
+        <th>내용</th>
         <th>조회수</th>
-        <td th:text="${board.boardHits}"></td>
-        <th>작성시간</th>
-        <td th:text="${board.createdTime}"></td>
+        <th>첨부파일</th>
+
     </tr>
+    </thead>
+    <tbody>
     <tr>
-        <th>글제목</th>
+        <td th:text="${board.id}"></td>
+        <td th:text="${board.boardWriter}"></td>
         <td th:text="${board.boardTitle}"></td>
-    </tr>
-    <tr>
-        <th>글내용</th>
+        <td th:text="${board.boardPassword}"></td>
+        <td th:text="${board.createdTime}"></td>
         <td th:text="${board.boardContents}"></td>
+        <td th:text="${board.boardHits}"></td>
+        <td><img th:src="@{|/upload/${board.boardFileName}|}" width="100" height="100" alt=""></td>
     </tr>
-
-        <button type="button" onclick="updateById([[${board.id}]])">수정</button>
-        <button type="button" onclick="deleteById([[${board.id}]])">삭제</button>
-        <div id="pw"></div>
-        <div id="btn"></div>
+    </tbody>
 </table>
+<!--    <button onclick="updateReq()">수정</button>-->
+<!--    <button onclick="deleteReq()">삭제</button>-->
+<button onclick="req(1)">수정</button>
+<button onclick="req(2)">삭제</button>
+
+<div id="pw">
+
+</div>
 </body>
-<script th:inline="javascript">
-    const updateById = () => {
-        const pwConfirm = document.getElementById("pw");
-        const btn = document.getElementById("btn");
-        pwConfirm.innerHTML = "<input type = 'text' id='pwCheck' name='pwCheck'>";
-        btn.innerHTML = "<input type = 'button' onclick='checkPw1()' value='비밀번호 확인'>"
-
-    }
-
-    const deleteById = () => {
-        const pwConfirm = document.getElementById("pw");
-        const btn = document.getElementById("btn");
-        pwConfirm.innerHTML = "<input type = 'text' id= 'pwCheck' onclick='checkPw()' name = 'pwCheck'>";
-        btn.innerHTML = "<input type = 'button' onclick='checkPw2()' value='비밀번호 확인'>"
-    }
-    const checkPw = () =>{
-        const pwCheck_val = document.getElementById("pwCheck").value;
-        const id = [[${board.id}]];
-        const pw = [[${board.boardPassword}]]
-        if (pw == pwCheck_val) {
+<script th:inline="javascript"> <!-- html 문법에서 script 문법으로 가져올때 모델값 dto들을 잘 활용할수 있게 도와준다. 값을 잘 가지고 올수 있게 한다. -->
+const req = (num) => {
+    let inputTag = "비밀번호 입력: <input type=\"text\" id=\"password\">\n" +
+        "        <button onclick=\"pwCheck("+num+")\">확인</button>";
+    document.getElementById("pw").innerHTML = inputTag;
+}
+const pwCheck = (num) => {
+    console.log("pwCheck함수", num);
+    const pwConfirm = document.getElementById("password").value;
+    console.log(pwConfirm);
+    const pw = [[${board.boardPassword}]];
+    const id = [[${board.id}]];
+    if (pw == pwConfirm) {
+        if(num == 1) {
             location.href = "/board/update/"+id;
         } else {
-            alert("비밀번호가 틀립니다.")
-        }
-    }
-
-    const checkPw2 = () => {
-        const pwCheck_val = document.getElementById("pwCheck").value;
-        const id = [[${board.id}]];
-        const pw = [[${board.boardPassword}]]
-        if (pw == pwCheck_val) {
             location.href = "/board/delete/"+id;
-        } else {
-            alert("비밀번호가 틀립니다.")
         }
+    } else {
+        alert("틀려요");
     }
+}
+// const updateReq = () => {
+//     let inputTag = "비밀번호 입력: <input type=\"text\" id=\"password\">\n" +
+//                    "        <button onclick=\"pwCheck1()\">확인</button>";
+//     document.getElementById("pw").innerHTML = inputTag;
+// }
+// const deleteReq = () => {
+//     let inputTag = "비밀번호 입력: <input type=\"text\" id=\"password\">\n" +
+//         "        <button onclick=\"pwCheck2()\">확인</button>";
+//     document.getElementById("pw").innerHTML = inputTag;
+// }
+// const pwCheck1 = () => {
+//     console.log("pwCheck함수");
+//     const pwConfirm = document.getElementById("password").value;
+//     console.log(pwConfirm);
+//     const pw = [[${board.boardPassword}]];
+//     const id = [[${board.id}]];
+//     if (pw == pwConfirm) {
+//         alert("같아요");
+//         // 수정화면 요청
+//         location.href = "/board/update/"+id;
+//     } else {
+//         alert("틀려요");
+//     }
+// }
+// const pwCheck2 = () => {
+//     console.log("pwCheck함수");
+//     const pwConfirm = document.getElementById("password").value;
+//     console.log(pwConfirm);
+//     const pw = [[${board.boardPassword}]];
+//     const id = [[${board.id}]];
+//     if (pw == pwConfirm) {
+//         alert("같아요");
+//         // 삭제 요청
+//         location.href = "/board/delete/"+id;
+//     } else {
+//         alert("틀려요");
+//     }
+// }
 </script>
+
 </html>

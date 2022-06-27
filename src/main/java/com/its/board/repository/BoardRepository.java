@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
-    //native sql: update board_table set board_hits=board_hits+1 where id=?
+
+    // native sql: update board_table set board_hits=board_hits+1 where board_id=?
 
     // jpql(java persistence query language) 방식 스프링 JPA 에서 제공하는 DB 쿼리문
     @Modifying

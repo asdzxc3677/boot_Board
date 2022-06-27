@@ -6,11 +6,12 @@
 </head>
 <body>
 <h2>글작성 페이지 save.html</h2>
-<form action="/board/save" method="post">
+<form action="/board/save" method="post" enctype="multipart/form-data"> <!-- 파일 업로드 할때 enctype="multipart/form-data" 필수-->
     글제목:<input type="text" name="boardTitle"><br>
     작성자:<input type="text" name="boardWriter"><br>
     비밀번호:<input type="text" name="boardPassword"><br>
     글내용:<input type="text" name="boardContents"><br>
+    파일:<input type="file" name="boardFile"><br>
     <input type="submit" value="글작성">
 </form>
 </body>
