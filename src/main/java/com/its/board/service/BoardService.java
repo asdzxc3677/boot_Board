@@ -6,6 +6,7 @@ import com.its.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,11 @@ public class BoardService {
         return saveId;
     }
 
+    @Transactional // findById 에는 @Transactional을 붙여야 한다.
     public BoardDTO findById(Long id) {
+        //조회수 처리
+        //native sql: update board_table set boardHits=boardHits+1 where id=?
+        boardRepository.boardHits(id);
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if (optionalBoardEntity.isPresent()){
             BoardEntity boardEntity = optionalBoardEntity.get();

@@ -38,16 +38,16 @@ public class BoardController {
         model.addAttribute("boardList",boardDTOList);
         return "boardPages/list";
     }
-    @GetMapping("/update/{id}")
+    @GetMapping("/update/{id}") // 수정화면
     public String update(@PathVariable Long id, Model model ){
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("findDTO",boardDTO);
         return "boardPages/update";
     }
-    @PostMapping("/update")
+    @PostMapping("/update") // 수정처리
     public String update(@ModelAttribute BoardDTO boardDTO){
         boardService.update(boardDTO);
-        return "redirect:/board" + boardDTO.getId();
+        return "redirect:/board/";
     }
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
