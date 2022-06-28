@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity // DTO같은 역할을 하는데 스트링부트에서 데이터베이스에 저장할때 쓰는 타입
 @Getter @Setter
@@ -37,6 +39,10 @@ public class BoardEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
+
+    //게시글-댓글 연관관계(1:N)
+    @OneToMany(mappedBy = "boardEntity",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList = new ArrayList<>();
 
 
    //회원엔티티와 연관관계 맺기전

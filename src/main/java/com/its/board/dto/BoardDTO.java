@@ -19,10 +19,11 @@ public class BoardDTO {
     private String boardContents; //내용
     private int boardHits; //조회수
     private LocalDateTime createdTime; //작성시간
-    private LocalDateTime updatedTime; //업데이트시간
+    private LocalDateTime updatedTime; //업데이트 시간
 
-    private MultipartFile boardFile; //실제파일
-    private String boardFileName; //파일이름
+    private MultipartFile boardFile; // 실제 파일
+    private String boardFileName; // 파일 이름
+
 
     public BoardDTO(Long id, String boardTitle, String boardWriter, int boardHits, LocalDateTime createdTime) {
         this.id = id;
