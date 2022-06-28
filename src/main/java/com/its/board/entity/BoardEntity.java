@@ -33,16 +33,36 @@ public class BoardEntity extends BaseEntity {
     @Column
     private String boardFileName;
 
-    public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
+    //회원-게시글 연관관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private MemberEntity memberEntity;
+
+
+   //회원엔티티와 연관관계 맺기전
+//    public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
+//        BoardEntity boardEntity = new BoardEntity();
+//        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+//        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+//        boardEntity.setBoardPassword(boardDTO.getBoardPassword());
+//        boardEntity.setBoardContents(boardDTO.getBoardContents());
+//        boardEntity.setBoardHits(0);
+//        boardEntity.setBoardFileName(boardDTO.getBoardFileName());
+//        return boardEntity;
+//    }
+        //회원과 연관관계 맺은 후
+        public static BoardEntity toSaveEntity(BoardDTO boardDTO,MemberEntity memberEntity) {
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
-        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+//        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+        boardEntity.setBoardWriter(memberEntity.getMemberEmail()); //회원 이메일을 작성자로 한다면
         boardEntity.setBoardPassword(boardDTO.getBoardPassword());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(0);
         boardEntity.setBoardFileName(boardDTO.getBoardFileName());
         return boardEntity;
     }
+
 
     public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();

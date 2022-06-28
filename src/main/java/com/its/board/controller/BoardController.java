@@ -50,7 +50,9 @@ public class BoardController {
     // 수정화면 요청
     @GetMapping("/update/{id}") // 수정화면 요청
     public String updateForm(@PathVariable Long id, Model model) {
+        System.out.println(id);
         BoardDTO boardDTO = boardService.findById(id);
+        System.out.println("boardDTO = " + boardDTO);
         model.addAttribute("boardUpdate", boardDTO);
         return "boardPages/update";
     }

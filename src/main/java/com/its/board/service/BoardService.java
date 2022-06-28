@@ -3,7 +3,9 @@ package com.its.board.service;
 import com.its.board.common.PagingConst;
 import com.its.board.dto.BoardDTO;
 import com.its.board.entity.BoardEntity;
+import com.its.board.entity.MemberEntity;
 import com.its.board.repository.BoardRepository;
+import com.its.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
+
     public Long save(BoardDTO boardDTO) throws IOException {
         // 글쓰기및 파일업로드가 안되었던 이유 : 1.서비스쪽 오타. 2.파일경로 설정안했음 D드라이브에 저장할 파일 springboot_img 설정안함  3.테이블 컬럼 잘못설정 4. dto에 파일 업로드 추가를 안했음
         MultipartFile boardFile = boardDTO.getBoardFile(); // 파일업로드 추가
@@ -34,8 +38,16 @@ public class BoardService {
         }
         boardDTO.setBoardFileName(boardFileName);
 
-        Long savedId = boardRepository.save(BoardEntity.toSaveEntity(boardDTO)).getId();
-        return savedId;
+        //toSaveEntity 메서드에 회원 엔티티를 같이 전달해야 함.(로그인 이메일이 작성자와 동일하는 전제조건)
+        Optional<MemberEntity>optionalMemberEntity =
+                memberRepository.findByMemberEmail(boardDTO.getBoardWriter());
+        if (optionalMemberEntity.isPresent()){
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            Long savedId = boardRepository.save(BoardEntity.toSaveEntity(boardDTO,memberEntity)).getId();
+            return savedId;
+        }else {
+            return null;
+        }
     }
 
     public List<BoardDTO> findAll() {
@@ -54,7 +66,9 @@ public class BoardService {
         boardRepository.boardHits(id);
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if (optionalBoardEntity.isPresent()) {
-            return BoardDTO.toBoardDTO(optionalBoardEntity.get());
+            BoardEntity boardEntity = optionalBoardEntity.get();
+            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+            return boardDTO;
         } else {
             return null;
         }
@@ -66,7 +80,7 @@ public class BoardService {
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
-    }
+    } //삭제 처리
 
     public Page<BoardDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber(); //요청 페이지값 가져옴.
